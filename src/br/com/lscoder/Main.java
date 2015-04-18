@@ -40,9 +40,28 @@ public class Main {
     }
 
     private static String Solve(Scanner scanner) {
-        /************************** YOUR CODE HERE **************************/
+        int c = scanner.nextInt();
+        int[] m = new int[c];
+        int prev;
+        int t1 = 0;
+        int t2 = 0;
+        int rate = 0;
 
-        return "Your result here";
+        for(int i = 0; i < c; i++) {
+            m[i] = scanner.nextInt();
+
+            if((i > 0) && (m[i] <= m[i-1])) {
+                int d = m[i-1] - m[i];
+                t1 += d;
+                rate = Math.max(rate, d);
+            }
+        }
+
+        for(int i = 0; i < c - 1; i++) {
+            t2 += Math.min(rate, m[i]);
+        }
+
+        return t1 + " " + t2;
     }
 
 
