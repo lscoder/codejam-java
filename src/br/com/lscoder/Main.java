@@ -54,7 +54,8 @@ public class Main {
             }
             System.out.println("\t[0] Sair");
 
-            fileId = Integer.parseInt(bufferReader.readLine());
+            String inputLine = bufferReader.readLine();
+            fileId = inputLine.matches("\\d+") ? Integer.parseInt(inputLine) : -1;
 
             if(fileId == 0)
                 return null;
