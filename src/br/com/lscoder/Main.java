@@ -6,8 +6,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        String inputFilesPath = System.getProperty("user.dir") + "/files/input";
-        String outputFilesPath = System.getProperty("user.dir") + "/files/output";
+        String currentPath = System.getProperty("user.dir");
+        String inputFilesPath = currentPath + "/files/input";
+        String outputFilesPath = currentPath + "/files/output";
         File inputFile = chooseInputFile(inputFilesPath);
         File outputFile;
 
@@ -29,6 +30,9 @@ public class Main {
         }
 
         System.out.println("\nOutput file `" + outputFile.getName() + "` created!");
+
+        Runtime.getRuntime().exec(new String[] {"sh", currentPath + "/submit.sh"});
+        System.out.println("Files available in the `submit` folder");
     }
 
     public static File chooseInputFile(String inputFilesPath) throws IOException {
