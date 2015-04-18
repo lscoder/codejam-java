@@ -1,8 +1,10 @@
 .idea/
 *.class
-*.in
+sample.in
 *.out
 *.rar
 *.zip
 *.swp
 .DS_Store
+submit/
+download/

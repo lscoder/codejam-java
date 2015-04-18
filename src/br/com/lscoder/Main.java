@@ -40,11 +40,80 @@ public class Main {
     }
 
     private static String Solve(Scanner scanner) {
-        /************************** YOUR CODE HERE **************************/
+        int b = scanner.nextInt();
+        long p = scanner.nextLong();
+        int[] t = new int[b];
+        int[] tb = new int[b];
+        long l = 1;
 
-        return "Your result here";
+        for(int i = 0; i < b; i++) {
+            t[i] = scanner.nextInt();
+            tb[i] = 0;
+
+            if(i == 1) {
+                l = lcm(t[i], t[i - 1]);
+            } else if(i > 1) {
+                l = lcm(t[i], l);
+            }
+        }
+
+        if(b == 1) {
+            l = t[0];
+        }
+
+        int cl = 0;
+        for(int i = 0; i < b; i++) {
+            cl += l / t[i];
+        }
+
+        p = p % cl;
+        if(p == 0) {
+            p = cl;
+        }
+
+        while(p > 0) {
+            int m = tb[0];
+
+            for (int i = 0; (i < b) && (m != 0); i++) {
+                m = Math.min(m, tb[i]);
+            }
+
+            if(m > 0) {
+                for (int i = 0; i < b; i++) {
+                    tb[i] -= m;
+                }
+            }
+
+            for (int i = 0; i < b; i++) {
+                if (tb[i] == 0) {
+                    tb[i] = t[i];
+                    p--;
+
+                    if (p == 0) {
+                        return Integer.toString((i + 1));
+                    }
+                }
+            }
+        }
+
+        return "-1";
     }
 
+    private static long lcm(long a, long b) {
+        long m = Math.max(a * b, -a * b);
+        return m / gcd(a, b);
+    }
+
+    private static long gcd(long a, long b) {
+        long t;
+
+        while (b != 0) {
+            t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
 
     private static void WriteResult(int testCaseId, String result, BufferedWriter outputFile) throws IOException {
         String formatedLine = "Case #" + testCaseId + ": " + result + "\n";
