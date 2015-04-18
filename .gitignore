@@ -1,4 +1,6 @@
+# IntelliJ IDEA folder
 .idea/
+
 *.class
 *.in
 *.out
@@ -6,3 +8,5 @@
 *.zip
 *.swp
 .DS_Store
+download/
+submit/

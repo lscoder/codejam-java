@@ -1,14 +1,6 @@
-rm submit/*.out
-rm submit/*.zip
-rm -rf submit/src
-cp -rp src/ submit/src
+mkdir submit > /dev/null 2>&1
+rm submit/*.out > /dev/null 2>&1
+cp src/br/com/lscoder/Main.java submit/
 
+# Copying the latest output file created
 ls -t files/output/*.out | head -n 1 | xargs -I % cp % ./submit/
-
-cd submit
-
-zip -r src.zip src/
-rm -rf src
-
-# Exit from 'submit' folder
-cd ..

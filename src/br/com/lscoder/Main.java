@@ -1,7 +1,6 @@
 package br.com.lscoder;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
@@ -9,22 +8,69 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String inputFilesPath = System.getProperty("user.dir") + "/files/input";
         String outputFilesPath = System.getProperty("user.dir") + "/files/output";
-        FileManager fileManager = new FileManager(inputFilesPath, outputFilesPath);
-        AsciiMenuFileSelector inputFileSelector = new AsciiMenuFileSelector(fileManager, System.in, System.out);
-
-        ProblemInputFile inputFile = inputFileSelector.Select();
+        File inputFile = chooseInputFile(inputFilesPath);
+        File outputFile;
 
         if (inputFile == null)
             return;
 
-        Scanner scanner = fileManager.OpenInputFile(inputFile);
-        BufferedWriter outputFile = fileManager.CreateOutputFile(inputFile);
+        Scanner scanner = new Scanner(inputFile);
+        outputFile = createOutputFile(inputFile, outputFilesPath);
 
-        Solve(scanner, outputFile);
+        FileWriter fileWriter = new FileWriter(outputFile);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        System.out.println("\nOutput file for `" + inputFile.getName() + "` was created!");
+        try
+        {
+            Solve(scanner, bufferedWriter);
+        } finally {
+            bufferedWriter.close();
+            fileWriter.close();
+        }
 
-        outputFile.close();
+        System.out.println("\nOutput file `" + outputFile.getName() + "` created!");
+    }
+
+    public static File chooseInputFile(String inputFilesPath) throws IOException {
+        int fileId;
+        InputStreamReader streamReader = new InputStreamReader(System.in);
+        BufferedReader bufferReader = new BufferedReader(streamReader);
+        File inputFolder = new File(inputFilesPath);
+        File[] files = inputFolder.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".in");
+            }
+        });
+
+        do {
+            System.out.println("\nChoose one of the input files listed below\n");
+            for (int i = 0; i < files.length; i++) {
+                File file = files[i];
+                System.out.println("\t[" + (i + 1) + "] " + file.getName());
+            }
+            System.out.println("\t[0] Sair");
+
+            fileId = Integer.parseInt(bufferReader.readLine());
+
+            if(fileId == 0)
+                return null;
+
+            if((fileId < 1) || (fileId > files.length)) {
+                System.out.println("Opção inválida!");
+                fileId = -1;
+            }
+
+        } while(fileId == -1);
+
+        return files[fileId - 1];
+    }
+
+    private static File createOutputFile(File inputFile, String outputFilesPath ) throws IOException {
+        String inputFileName = inputFile.getName();
+        String outputFileName = inputFileName.substring(0, inputFileName.indexOf('.'));
+        File outputFile = new File(outputFilesPath  + "/" + outputFileName + ".out");
+
+        return outputFile;
     }
 
     private static void Solve(Scanner scanner, BufferedWriter outputFile) throws IOException {
@@ -40,16 +86,16 @@ public class Main {
     }
 
     private static String Solve(Scanner scanner) {
-        /************************** YOUR CODE HERE **************************/
+        /************************** YOUR CODE GOES HERE **************************/
 
-        return "Your result here";
+        return "";
     }
 
 
     private static void WriteResult(int testCaseId, String result, BufferedWriter outputFile) throws IOException {
-        String formatedLine = "Case #" + testCaseId + ": " + result + "\n";
+        String formattedLine = "Case #" + testCaseId + ": " + result + "\n";
 
-        System.out.print(formatedLine);
-        outputFile.write(formatedLine);
+        System.out.print(formattedLine);
+        outputFile.write(formattedLine);
     }
 }
