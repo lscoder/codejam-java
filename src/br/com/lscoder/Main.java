@@ -1,6 +1,7 @@
 package br.com.lscoder;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -91,9 +92,28 @@ public class Main {
     }
 
     private static String Solve(Scanner scanner) {
-        /************************** YOUR CODE GOES HERE **************************/
+        int n = scanner.nextInt();
+        int[] p = new int[n];
+        int ans, max;
 
-        return "";
+        for(int i = 0; i < n; i++) {
+            p[i] = scanner.nextInt();
+        }
+
+        Arrays.sort(p);
+        max = p[p.length - 1];
+        ans = max;
+
+        for(int i = 1; i <= max; i++) {
+            int d = i;
+            for(int j = 0; j < n; j++) {
+                d += (p[j] - 1) / i;
+            }
+
+            ans = Math.min(ans, d);
+        }
+
+        return Integer.toString(ans);
     }
 
 
