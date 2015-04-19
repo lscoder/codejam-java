@@ -42,77 +42,48 @@ public class Main {
     private static String Solve(Scanner scanner) {
         int b = scanner.nextInt();
         long p = scanner.nextLong();
-        int[] t = new int[b];
-        int[] tb = new int[b];
-        long l = 1;
+        int[] times = new int[b];
 
         for(int i = 0; i < b; i++) {
-            t[i] = scanner.nextInt();
-            tb[i] = 0;
+            times[i] = scanner.nextInt();
+        }
 
-            if(i == 1) {
-                l = lcm(t[i], t[i - 1]);
-            } else if(i > 1) {
-                l = lcm(t[i], l);
+        long l = 0;
+        long r = 1000000000000000L;
+
+        while(l < r) {
+            long mid = (l + r) / 2;
+
+            long total = 0;
+            for(int i = 0; i < b; i++) {
+                total += (mid / times[i]) + 1;
+            }
+
+            if(total >= p) {
+                r = mid;
+            } else {
+                l = mid + 1;
             }
         }
 
-        if(b == 1) {
-            l = t[0];
-        }
-
-        int cl = 0;
+        long time = l - 1;
+        long total = 0;
         for(int i = 0; i < b; i++) {
-            cl += l / t[i];
+            total += time / times[i] + 1;
         }
 
-        p = p % cl;
-        if(p == 0) {
-            p = cl;
-        }
+        int diff = (int) (p - total);
 
-        while(p > 0) {
-            int m = tb[0];
-
-            for (int i = 0; (i < b) && (m != 0); i++) {
-                m = Math.min(m, tb[i]);
-            }
-
-            if(m > 0) {
-                for (int i = 0; i < b; i++) {
-                    tb[i] -= m;
-                }
-            }
-
-            for (int i = 0; i < b; i++) {
-                if (tb[i] == 0) {
-                    tb[i] = t[i];
-                    p--;
-
-                    if (p == 0) {
-                        return Integer.toString((i + 1));
-                    }
+        time++;
+        for(int i = 0; i < b; i++) {
+            if(time % times[i] == 0) {
+                if(--diff == 0) {
+                    return Integer.toString(i + 1);
                 }
             }
         }
 
         return "-1";
-    }
-
-    private static long lcm(long a, long b) {
-        long m = Math.max(a * b, -a * b);
-        return m / gcd(a, b);
-    }
-
-    private static long gcd(long a, long b) {
-        long t;
-
-        while (b != 0) {
-            t = b;
-            b = a % b;
-            a = t;
-        }
-        return a;
     }
 
     private static void WriteResult(int testCaseId, String result, BufferedWriter outputFile) throws IOException {
