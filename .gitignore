@@ -2,7 +2,7 @@
 .idea/
 
 *.class
-*.in
+sample.in
 *.out
 *.rar
 *.zip
