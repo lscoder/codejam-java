@@ -91,9 +91,22 @@ public class Main {
     }
 
     private static String Solve(Scanner scanner) {
-        /************************** YOUR CODE GOES HERE **************************/
+        int people = scanner.nextInt() + 1;
+        String strShyness = scanner.next();
+        int count = strShyness.charAt(0) - '0';
+        int friends = 0;
 
-        return "";
+        for(int i = 1; i < people; i++) {
+            if(count < i) {
+                friends += i - count;
+                count = i;
+            }
+
+            count += strShyness.charAt(i) - '0';
+        }
+
+
+        return Integer.toString(friends);
     }
 
 
