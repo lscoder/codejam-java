@@ -90,10 +90,59 @@ public class Main {
         }
     }
 
-    private static String Solve(Scanner scanner) {
-        /************************** YOUR CODE GOES HERE **************************/
+    private static int[][] mtx = new int[][] {
+        {0, 1,  2,  3,  4},
+        {1, 1,  2,  3,  4},
+        {2, 2, -1,  4, -3},
+        {3, 3, -4, -1,  2},
+        {4, 4,  3, -2, -1}
+    };
 
-        return "";
+    private static String Solve(Scanner scanner) {
+        int len = scanner.nextInt();
+        long rep = scanner.nextLong();
+        String str = scanner.next();
+        int[] seq = new int[len];
+
+        for(int i = 0; i < len; i++) {
+            seq[i] = str.charAt(i) - 'i' + 2;
+        }
+
+        int mult = 1;
+        for(long i = 0; i < rep; i++) {
+            for(int j = 0; j < len; j++) {
+                mult = multiply(mult, seq[j]);
+            }
+        }
+
+        if(mult != -1) {
+            return "NO";
+        }
+
+        int iValue = 1;
+        int jValue = 1;
+        boolean stop = false;
+
+        for(long i = 0; (i < rep) && !stop; i++) {
+            for(int j = 0; (j < len) && !stop; j++) {
+                if(iValue != 2) {
+                    iValue = multiply(iValue, seq[j]);
+                } else if(jValue != 3) {
+                    jValue = multiply(jValue, seq[j]);
+                }
+
+                if((iValue == 2) && (jValue == 3)) {
+                    stop = true;
+                }
+            }
+        }
+
+        return (iValue == 2) && (jValue == 3) ? "YES" : "NO";
+    }
+
+    private static int multiply(int row, int col) {
+        int s = row * col < 0 ? -1 : 1;
+        return s * (mtx[Math.abs(row)][Math.abs(col)]);
     }
 
 
