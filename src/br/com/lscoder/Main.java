@@ -1,6 +1,7 @@
 package br.com.lscoder;
 
 import java.io.*;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
@@ -14,6 +15,8 @@ public class Main {
 
         if (inputFile == null)
             return;
+
+        Locale.setDefault(Locale.US);
 
         Scanner scanner = new Scanner(inputFile);
         outputFile = createOutputFile(inputFile, outputFilesPath);
