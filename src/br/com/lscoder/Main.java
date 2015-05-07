@@ -81,15 +81,35 @@ public class Main {
         return outputFile;
     }
 
+    private static String formatElapsedTime(int elapsedTime) {
+        int seconds = elapsedTime / 1000;
+        int millis = elapsedTime % 1000;
+
+        return (seconds > 0 ? seconds + "s " : "") + millis + "ms";
+    }
+
+    private static void WriteResult(int testCaseId, String result, BufferedWriter outputFile, int elapsedTime) throws IOException {
+        String formattedLine = "Case #" + testCaseId + ": " + result + "\n";
+
+        System.out.print(formattedLine);
+        System.out.println("Duration: " + formatElapsedTime(elapsedTime) + "\n");
+        outputFile.write(formattedLine);
+    }
+
     private static void Solve(Scanner scanner, BufferedWriter outputFile) throws IOException {
         int testCasesCount = scanner.nextInt();
+        long startTime;
+        int elapsedTime;
 
         System.out.println("\nRunning `" + testCasesCount + "` test cases...\n");
 
         for (int testCaseId = 1; testCaseId <= testCasesCount; testCaseId++)
         {
+            startTime = System.nanoTime();
             String result = Solve(scanner);
-            WriteResult(testCaseId, result, outputFile);
+            elapsedTime = (int) ((System.nanoTime() - startTime) / 1000000);
+
+            WriteResult(testCaseId, result, outputFile, elapsedTime);
         }
     }
 
@@ -97,13 +117,5 @@ public class Main {
         /************************** YOUR CODE GOES HERE **************************/
 
         return "";
-    }
-
-
-    private static void WriteResult(int testCaseId, String result, BufferedWriter outputFile) throws IOException {
-        String formattedLine = "Case #" + testCaseId + ": " + result + "\n";
-
-        System.out.print(formattedLine);
-        outputFile.write(formattedLine);
     }
 }
